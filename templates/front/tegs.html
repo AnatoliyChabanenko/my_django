@@ -1,0 +1,20 @@
+{% extends 'front/base_olya.html' %}
+
+{% block title %}
+    {{ teg.tags}}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ teg.tags}}</h1>
+
+        <div class="news-title">{{ teg.tags }} </div>
+    {% for n in teg.teg_news %}
+
+        <div class="news-title">{{ n.name }} </div>
+        <i> автор{{ n.author.name }}</i>
+    <p>
+        {{ n.text|truncatewords:30 }}
+
+
+    {% endfor %}
+{% endblock %}

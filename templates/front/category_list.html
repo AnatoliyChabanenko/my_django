@@ -1,0 +1,23 @@
+{% extends 'front/base_olya.html' %}
+
+{% block title %}
+    {{ cat.name}}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ cat.name}}</h1>
+{% for n in cat.news %}
+    <div>
+        <div class="news-title">{{ n.name }} </div>
+        <i> автор{{ n.author.name }}</i>
+    <p>
+        {{ n.text|truncatewords:30 }}
+
+
+
+    </p>
+
+    </div>
+    {% endfor %}
+
+{% endblock %}
