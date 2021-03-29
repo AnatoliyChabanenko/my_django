@@ -6,13 +6,16 @@ from front.models import Category, News, Tags
 
 class HomeView(ListView):
     model = Category
-    template_name = 'front/base.html'
+    template_name = 'front/base1.html'
     context_object_name = 'Category'
+
     paginate_by = 4
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['name'] = 'Blog news'
+        news = News.objects.all()
+        context['menu']= news
         return context
 
     def get_queryset(self):
