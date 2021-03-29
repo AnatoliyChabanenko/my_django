@@ -7,7 +7,7 @@ class Category(models.Model):
 
     @property
     def news(self):
-        return News.objects.filter(categori=self).select_related('author',)
+        return News.objects.filter(categori=self)
 
     @property
     def has_child(self):

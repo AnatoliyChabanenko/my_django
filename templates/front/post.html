@@ -1,7 +1,6 @@
 <ul>
     {% for c in catlist %}
         <li> <a href="{% url 'tegs' slug=c.name %}" data-id="{{ c.pk }}">{{ c.name }}</a>
-
         </li>
     {% endfor %}
 </ul>

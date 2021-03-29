@@ -1,37 +1,65 @@
-from django.shortcuts import render, get_object_or_404
 
+from django.views.generic import ListView, DetailView
 
 from front.models import Category, News, Tags
 
 
-def index(req):
-    print('ya zapustilsya')
-    return render(req, 'front/base_olya.html', context={
-        'category_0':  Category.objects.filter(parent=None) ,
-        'tegs ': Tags.objects.filter(id= 1)
-    })
+class HomeView(ListView):
+    model = Category
+    template_name = 'front/base.html'
+    context_object_name = 'Category'
+    paginate_by = 4
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['name'] = 'Blog news'
+        return context
+
+    def get_queryset(self):
+        return Category.objects.filter(parent=None)
 
 
-def category_list(request, **kwargs):
+class News_list(ListView):
+    model = News
+    template_name = 'front/index.html'
+    context_object_name = 'catlist'
 
-    if 'pk' in kwargs:
-        c = get_object_or_404(Category, pk=kwargs['pk'] )
-    elif 'slug' in kwargs:
-        c = Category.objects.get(name=kwargs['slug'])
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
-    return render(request, 'front/category_list.html', {'cat': c})
-
-
-def text(req ,**kwargs):
-    if 'pk' in kwargs:
-        text = get_object_or_404(News, pk=kwargs['pk'])
-    return render(req, 'front/post_detail.html', {'text':text})
+    def get_queryset(self):
+        return News.objects.filter(categori__name=self.kwargs['slug'])
 
 
-def tegs (req , **kwargs):
-    if 'slug' in kwargs:
-        tag = Tags.objects.get(tags = kwargs['slug'])
-    return render(req, 'front/tegs.html', {'teg': tag})
+
+class Text(DetailView):
+    model = News
+    template_name = 'front/post_detail.html'
+    context_object_name = 'text'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class Tegs (DetailView):
+    model =  Tags
+    template_name = 'front/tegs.html'
+    context_object_name = 'teg'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_queryset(self):
+        return Tags.objects.filter(news__tags__news=self.kwargs['pk'])
+
+
+
+
+
+
 
 
 
